@@ -53,13 +53,12 @@ void MainWindow::createClass(bool isInterface) {
         ui->errorText->setText(error.toUtf8().data());
     // pokud objekt ještě neexistuje, vytvořím pro něj ui
     } else {
-        // jen výpis
-        ui->errorText->setText("ACTION: create Interface");
+        if (isInterface)
+            ui->errorText->setText("ACTION: create Interface");
+        else
+            ui->errorText->setText("ACTION: create Class");
 
-        // vytvoření skupiny s údaji třídy a nastavení jména objektu kvůli referenci
-        QWidget *w = new QWidget(ui->centerContent);
-        w->setObjectName(name);
-        QGroupBox *gpbox = new QGroupBox(tr(name.toUtf8().data()), w);
+        ui->classSelector->addItem(name);
         // zvýšení počítadla
         this->idCounter++;
     }

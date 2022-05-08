@@ -37,26 +37,26 @@ bool ClassDiagram::createClass(QString name, int id, bool isInterface, QWidget *
     }
 
     // vložení gui pro UMLClass
-    QVBoxLayout *layout = new QVBoxLayout();
-    obj->setLayout(layout);
+    QVBoxLayout layout;
+    obj->setLayout(&layout);
 
     // pokud je interface -> nelze přídávat atributy -> ani nebudu vykreslovat
     if (isInterface == false) {
         // řádky attributů
-        QVBoxLayout *attributes = new QVBoxLayout();
-        attributes->setObjectName("attributes");
-        layout->addLayout(attributes);
+        QVBoxLayout attributes;
+        attributes.setObjectName("attributes");
+        layout.addLayout(&attributes);
 
         // rozdělovač
-        QFrame *divider = new QFrame();
-        divider->setFrameShape(QFrame::HLine);
-        layout->addWidget(divider);
+        QFrame divider;
+        divider.setFrameShape(QFrame::HLine);
+        layout.addWidget(&divider);
     }
 
     // řádky metod
-    QVBoxLayout *methods = new QVBoxLayout();
-    methods->setObjectName("methods");
-    layout->addLayout(methods);
+    QVBoxLayout methods;
+    methods.setObjectName("methods");
+    layout.addLayout(&methods);
 
     // posun
     obj->move(id*10, id*10);
