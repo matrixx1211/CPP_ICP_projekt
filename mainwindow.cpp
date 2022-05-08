@@ -23,6 +23,10 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
 
+    // propojení akcí s pravou částí
+    connect(ui->addAttribute, SIGNAL(clicked()), this, SLOT(addAttribute()));
+    connect(ui->addOperation, SIGNAL(clicked()), this, SLOT(addOperation()));
+
     this->help = Help();
     this->classDiagram = new ClassDiagram("Diagram");
     this->idCounter = 1;
@@ -92,6 +96,57 @@ void MainWindow::about() {
     help.show();
 }
 
+
+// změní jméno
+void MainWindow::changeClassName() {
+
+}
+
+// přidá atribut
+void MainWindow::addAttribute() {
+    // test jestli náhodu není interface
+    QString className = ui->classSelector->currentText();
+    UMLClass *obj = classDiagram->findClass(className);
+    if (obj->getIsInterface()) {
+        ui->errorText->setText("Cannot add attribute to Interface.");
+        return;
+    }
+
+    // pomocné proměnné
+    QString accesibility = ui->attributeAccessibility->currentText();
+    QString name = ui->attributeName->text();
+    QString type = ui->attributeType->text();
+    // test jestli bylo zadáno vše
+    if (className != "" && accesibility != "" && name != "" && type != "") {
+        // kam budu vkládat
+        QGroupBox *parent = ui->centerContent->findChild<QGroupBox *>(className);
+        QVBoxLayout *attributes = parent->findChild<QVBoxLayout *>("attributes");
+
+        // vytvoření a test atributu
+        UMLAttribute *attr = new UMLAttribute(name, classDiagram->classifierForName(type), accesibility);
+        if (!obj->addAttribute(attr)) {
+            ui->errorText->setText("Attribute already exists.");
+            return;
+        }
+
+        // nový záznam s nastavením
+        QLabel *label = new QLabel();
+        label->setText(accesibility.append(name.append(":").append(type)));
+        attributes->addWidget(label);
+        QRect r = parent->geometry();
+        parent->setGeometry(r.x(), r.y(), r.width(), r.height()+20);
+
+        // výpis
+        ui->errorText->setText("ACTION: add atribute\n");
+    } else {
+        ui->errorText->setText("Class, accesibility, name or type not selected.");
+    }
+}
+
+// přidá operaci
+void MainWindow::addOperation() {
+
+}
 
 // destruktor
 MainWindow::~MainWindow()

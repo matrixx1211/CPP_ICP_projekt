@@ -41,6 +41,8 @@ public:
     UMLClassifier *classifierForName(QString name);
     // najde classifier pokud existuje vrací classifier jinak vrací null
     UMLClassifier *findClassifier(QString name);
+    // najde class pokud existuje vrací class jinak vrací null
+    UMLClass *findClass(QString name);
     // vytvoří relaci
     UMLRelation *createRelation(QString name, QString type, QString class1, QString class2, QString class3);
     // najde relaci

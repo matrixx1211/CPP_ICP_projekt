@@ -53,5 +53,12 @@ private slots:
     void quit();
     // nápověda
     void about();
+
+    // změní jméno
+    void changeClassName();
+    // přidá atribut
+    void addAttribute();
+    // přidá operaci
+    void addOperation();
 };
 #endif // MAINWINDOW_H

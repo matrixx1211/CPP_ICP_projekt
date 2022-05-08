@@ -19,7 +19,7 @@ class UMLClass : public UMLClassifier, public QGroupBox
 {
 public:
     // konstruktor
-    UMLClass(QString name, int id, bool isInterface, QWidget *parent = nullptr);
+    UMLClass(QString name, int id, bool isInterface, QWidget *parent);
     // destruktor
     ~UMLClass();
 

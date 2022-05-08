@@ -1,6 +1,8 @@
 #include "classdiagram.h"
 
 #include <qboxlayout.h>
+#include <qpushbutton.h>
+#include <qlabel.h>
 
 ClassDiagram::ClassDiagram(QString name): Element{name}
 {
@@ -37,29 +39,32 @@ bool ClassDiagram::createClass(QString name, int id, bool isInterface, QWidget *
     }
 
     // vložení gui pro UMLClass
-    QVBoxLayout layout;
-    obj->setLayout(&layout);
+    QVBoxLayout *layout = new QVBoxLayout();
+    obj->setLayout(layout);
 
     // pokud je interface -> nelze přídávat atributy -> ani nebudu vykreslovat
     if (isInterface == false) {
         // řádky attributů
-        QVBoxLayout attributes;
-        attributes.setObjectName("attributes");
-        layout.addLayout(&attributes);
+        QVBoxLayout *attributes = new QVBoxLayout();
+        attributes->setObjectName("attributes");
+        layout->addLayout(attributes);
 
         // rozdělovač
-        QFrame divider;
-        divider.setFrameShape(QFrame::HLine);
-        layout.addWidget(&divider);
+        QFrame *divider = new QFrame();
+        divider->setFrameShape(QFrame::HLine);
+        layout->addWidget(divider);
     }
 
     // řádky metod
-    QVBoxLayout methods;
-    methods.setObjectName("methods");
-    layout.addLayout(&methods);
+    QVBoxLayout *methods = new QVBoxLayout();
+    methods->setObjectName("methods");
+    layout->addLayout(methods);
 
     // posun
-    obj->move(id*10, id*10);
+    obj->setGeometry(id*10, id*10, 100, 30);
+
+    // nastavení jména pro referenci
+    obj->setObjectName(name);
 
     // zobrazení
     obj->show();
@@ -80,10 +85,29 @@ UMLClass *ClassDiagram:: getObject(QString name) {
 }
 
 UMLClassifier *ClassDiagram::classifierForName(QString name) {
-    return NULL;
+    UMLClassifier *obj;
+    for (int i = 0; i < this->classifiers.size(); i++) {
+        obj = this->classifiers[i];
+        if (obj->getName().compare(name) == 0) {
+            return obj;
+        }
+    }
+    obj = new UMLClassifier(name);
+    return obj;
 }
 
 UMLClassifier *ClassDiagram::findClassifier(QString name) {
+    return NULL;
+}
+
+UMLClass *ClassDiagram::findClass(QString name) {
+    UMLClass *obj;
+    for (int i = 0; i < this->classes.size(); i++) {
+        obj = this->classes[i];
+        if (obj->getName().compare(name) == 0) {
+            return obj;
+        }
+    }
     return NULL;
 }
 
